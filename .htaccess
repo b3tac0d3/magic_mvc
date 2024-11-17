@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)\.(gif|jpg|png|jpeg|css|js|swf)$ /src/$1.$2 [L,NC]
+
+    # Removes index.php from ExpressionEngine URLs  
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !=\/index.php
+    RewriteRule .* /magic2/index.php
+</IfModule>
+
+Options -Indexes
