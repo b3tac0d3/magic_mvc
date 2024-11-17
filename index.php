@@ -21,12 +21,10 @@ if(!isset($_SESSION["Root"]["Id"]) || AppState == "Alpha"){
 }
 
 // Added to separate file so resources can be loaded on independent scripts (login, register, etc)
-require_once $_SESSION["Root"]["App"]["Dirs"]["Php"] . "autoload.php";
-
-echo "autoload works";exit;
+require_once "/src/app/php/autoload.php";
 
 // Final step is to call route file to direct traffic
-// $RouteClass = new Document\RouteClass();
+$RouteClass = new Document\RouteClass();
 
 // Get the URI and Route File
 $Uri = $RouteClass -> GetUri();
