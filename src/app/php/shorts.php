@@ -10,29 +10,29 @@ class sm{
     // Quickly access a pre-defined URL
     public static function Url($Input){
         // Return any pre-definded URL
-        if(empty($_SESSION["Root"]["App"]["Urls"][$Input]))
+        if(empty($_SESSION["Root"]["Paths"][$Input]["Url"]))
             return "Shorts function Url not located";
         else
-            return $_SESSION["Root"]["App"]["Urls"][$Input];
-    } // url()
+            return $_SESSION["Root"]["Paths"][$Input]["Url"];
+    } // Url()
 
     // Quickly access a pre-defined directory
     public static function Dir($Input){
         // Return and pre-defined directory
-        if(empty($_SESSION["Root"]["App"]["Dirs"][$Input]))
+        if(empty($_SESSION["Root"]["Paths"][$Input]["Dir"]))
             return "Shorts function Dir not located";
         else
-            return $_SESSION["Root"]["App"]["Dirs"][$Input];
-    } // dir()
+            return $_SESSION["Root"]["Paths"][$Input]["Dir"];
+    } // Dir()
 
     // Quickly access a pre-defined Dependence URL or directory
-    public static function Dep($Input, $Type = "Url"){
+    public static function Dep($Dir, $Type = "Url"){
         // Quickly access a dependency directory
         if($Type == "Url")
-            return $_SESSION["Root"]["App"]["Depends"]["Urls"][$Input];
+            return $_SESSION["Root"]["Depends"][$Dir]["Url"];
         else
-            return $_SESSION["Root"]["App"]["Depends"]["Dirs"][$Input];
-    }
+            return $_SESSION["Root"]["Depends"][$Dir]["Dir"];
+    } // Dep()
     
     // Quickly access and pre-defined variable under App or Dev
     public static function Cus($Input, $Type = "App") {
@@ -62,7 +62,7 @@ class sm{
     
         // Output the final value
         return $ReturnArray;
-    }
+    }  // Cus()
     
     
 }

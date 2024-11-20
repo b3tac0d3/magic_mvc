@@ -17,6 +17,7 @@ private $ControllerData;
 private $YieldsData;
 private $SectionsData;
 private $Error;
+private $PageTitle;
 private $GlobalShortVars;
 
 function __construct($ViewFileName, $ControllerData = null){
@@ -30,7 +31,7 @@ function __construct($ViewFileName, $ControllerData = null){
         return;
     }
     if(!empty($ControllerData)) $this -> ControllerData = $ControllerData;
-    $this -> ParseViewData(); // This handles checking for layout, includes and requires
+    $this -> ParseViewData(); // This handles checking for layout, title, includes and requires
     $this -> CaptureLayoutYields();
     $this -> CaptureViewSections();
     $this -> MergeLayoutViewData();
@@ -49,16 +50,23 @@ function CheckPrestoSyntax(){
     return substr($this -> RawViewData, 0, 7) === "@presto" ?: 0;
 }
 
+function GetTitle(){
+    if (!empty(preg_match('/(?<!\\\)@title\(["\'].*?["\']\)/i', $this->RawViewData, $Title))){
+        $this->PageTitle = preg_replace(array('/@title\(["\']/i', '/["\']\)/'), '', $Title[0]);
+    }    
+} // GetTitle()
+
 function ParseViewData(){
     $SearchArray = [
         "@sess" => "GetSess",
         "@auth" => "GetAuth",
+        "@title" => "GetTitle",
         "@layout" => "GetLayout"
     ];
-
     foreach($SearchArray as $Search => $Function){
-        if(str_contains($this -> RawViewData, $Search))
+        if(str_contains($this -> RawViewData, $Search)){
             $this -> $Function();
+        }
     }
 } // ParseViewData()
 
@@ -92,8 +100,9 @@ function GetAuth(){
 } // GetAuth()
 
 function GetLayout(){
-    if(!empty(preg_match("/(?<!\\\)@layout\(\S+.\)/i", $this -> RawViewData, $Layout))){
-        $LayoutFileName = preg_replace(array("/@layout\(/i", "/\)/"), "", $Layout[0]);
+    $PageTitle = $this -> PageTitle;
+    if (!empty(preg_match('/(?<!\\\)@layout\(["\'].*?["\']\)/i', $this->RawViewData, $Layout))){
+        $LayoutFileName = preg_replace(array('/@layout\(["\']/i', '/["\']\)/'), '', $Layout[0]);    
         $LayoutFileName = $this -> LayoutsPath . str_replace(".", "/", $LayoutFileName) . ".php";
         if(is_file($LayoutFileName)){
             ob_start();
@@ -108,16 +117,16 @@ function GetLayout(){
 } // GetLayout()
 
 function GetIncludes(){
-    if(!empty(preg_match("/(?<!\\\)@include\(\S+.\)/i", $this -> RawViewData, $Includes))){
-        $IncludesFile = preg_replace(array("/@include\(/i", "/\)/"), "", $Includes[0]);
+    if (!empty(preg_match('/(?<!\\\)@include\(["\'].*?["\']\)/i', $this->RawViewData, $Includes))){
+        $IncludesFile = preg_replace(array('/@include\(["\']/i', '/["\']\)/'), '', $Includes[0]);    
         $IncludeFileName = str_replace(".", "/", $IncludesFile) . ".php";
         include_once sm::Dir("Views") . $IncludeFileName;
     }
 } // GetIncludes()
 
 function GetRequires(){
-    if(!empty(preg_match("/(?<!\\\)@require\(\S+.\)/i", $this -> RawViewData, $Requires))){
-        $RequiresFile = preg_replace(array("/@require\(/i", "/\)/"), "", $Requires[0]);
+    if (!empty(preg_match('/(?<!\\\)@require\(["\'].*?["\']\)/i', $this->RawViewData, $Requires))){ 
+    $RequiresFile = preg_replace(array('/@require\(["\']/i', '/["\']\)/'), '', $Requires[0]);
         $RequireFileName = str_replace(".", "/", $RequiresFile) . ".php";
         require_once sm::Dir("Views") . $RequireFileName;
     }
@@ -128,7 +137,7 @@ function GetExternalView($View){
 } // GetExternalView()
 
 function CaptureLayoutYields(){
-    preg_match_all("/@yield\(\S+\)/i", $this -> RawLayoutData, $FoundYields);
+    preg_match_all('/@yield\(["\']?\S+["\']?\)/i', $this->RawLayoutData, $FoundYields);
     $Yields = array();
     if(($YieldCount = count($FoundYields[0])) < 1) return false;
     $FoundYields = $FoundYields[0];
@@ -145,7 +154,7 @@ function CaptureViewSections(){
     $SectionKey = 0;
 
     // This expression is purposely using negactive lookback for the .0000001% chance that the user is trying to reference presto syntax in their code
-    preg_match_all("/((?<!\\\)\@section\(\S+\))(.*?)((?<!\\\)\@endsection)/sm", $this -> RawViewData, $FoundSections);
+    preg_match_all('/((?<!\\\)@section\(["\']?\S+["\']?\))(.*?)(?<!\\\)@endsection/sm', $this->RawViewData, $FoundSections);
 
     // One the .000001% off chance that there's a reference to an @section or @endsection which should be printed to the page, fix the backslashes
     $FoundSections[2] = str_replace("\@section", "@section", $FoundSections[2]);
@@ -161,10 +170,10 @@ function CaptureViewSections(){
         // If variables are found, process accordingly
         if(count($Variables) > 0) $CurrentSection = $this -> ConvertSectionVariables($CurrentSection, $Variables);
         // Check for includes
-        preg_match_all("/@include\(\S+\)/i", $CurrentSection, $Includes);
+        preg_match_all('/@include\(["\']?\S+["\']?\)/i', $CurrentSection, $Includes);
         if(count($Includes[0]) > 0) $CurrentSection = $this -> ConvertIncludes($CurrentSection, $Includes[0], "Include"); 
         // Check for requires
-        preg_match_all("/@require\(\S+\)/i", $CurrentSection, $Requires);
+        preg_match_all('/@require\(["\']?\S+["\']?\)/i', $CurrentSection, $Requires);
         if(count($Requires[0]) > 0) $CurrentSection = $this -> ConvertIncludes($CurrentSection, $Requires[0], "Require"); 
         // Add section content to section array
         $SectionsArray[$SectionName] = $CurrentSection;

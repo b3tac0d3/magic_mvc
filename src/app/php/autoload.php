@@ -4,13 +4,13 @@ if(empty($_SESSION)) session_start();
 function RequireScripts($Files) {
     $Files = func_get_args();
     foreach($Files as $File)
-        require_once($_SESSION["Root"]["App"]["Dirs"]["Php"] . $File . ".php");
+        require_once($_SESSION["Root"]["Paths"]["Php"]["Core"]["Dir"] . $File . ".php");
 }
 
 function RequireDependencies($Files){
     $Files = func_get_args();
     foreach($Files as $File)
-        require_once($_SESSION["Root"]["App"]["Dirs"]["Depends"] . $File . ".php");
+        require_once($_SESSION["Root"]["Paths"]["Depends"]["Dir"] . $File . ".php");
 }
 
 // PHP Scripts
@@ -22,8 +22,7 @@ RequireScripts(
     "authorize",
     "session",
     "route",
-    "error",
-    "build"
+    "error"
 );
 
 // Dependencies

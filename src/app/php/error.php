@@ -13,15 +13,6 @@ class ErrorClass{
         if(!empty($ErrorStatus)) $this -> ErrorStatus = $ErrorStatus;
     } // __Construct()
 
-    function ThrowCodeError($ErrorMessage, $OriginFile, $ErrorStatus = true){
-        echo "
-            <h1>Oops!</h1>
-            <p>It looks like there's an error in the code. The code reported the following error from file: <b>$OriginFile</b></p>
-            <p>Error: <b>$ErrorMessage</b></p>
-        ";
-        exit;
-    } // ThrowError()
-
     function PageError($Code = null, $Message = null, $Status = true){
         // For pages that have load issues, unrelated to scripts. This function redirects to a new page.
         $ErrorsDirectory = sm::Dir("Views") . "errors/";
@@ -40,7 +31,12 @@ class ErrorClass{
     } // PageError()
 
     function CodeError($Code = null, $Message = null, $Status = true, $File = null){
-        // Mostly for scripting errors that are not caught by the error handler
+        echo "
+            <h1>Oops!</h1>
+            <p>It looks like there's an error in the code. The code reported the following error from file: <b>$File</b></p>
+            <p>Error: <b>$Message</b></p>
+        ";
+        exit;
     } // CodeError()
 
     function ThrowError(){

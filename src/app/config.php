@@ -13,8 +13,8 @@ $MySQLUsername = "root";
 $MySQLPassword = "root";
 
 // Default page settings
-$PageTitle = "Magic";
-$Favicon = "src/app/img/framework/magic-favicon.ico";
+$PageTitle = "Magic"; // This is the default page title
+$Favicon = "src/user/img/framework/favicon_hat.ico";
 
 /* =============================================================================================================================================================================== 
 ==================================================================================================================================================================================
@@ -69,246 +69,264 @@ $AppHeader = -1;
 // Set AppState after dev options to give chance to change it
 $AppState = GetAppState(AppState);
 
-return array(
-    /************
-    Dev
-    ************/
-    "Dev" => array(
-    /*    
-        Set the AppState for dev purposes
-        */
-        "AppState" => $AppState,
+/************
+Dev
+************/
+$DevArray = [
+    // Set the AppState for dev purposes
+    "AppState" => $AppState,
 
-        /*
+    /*
         Used for dev only
         dev: $DebugMode = 1;
         prod: $DebugMode = 0;
-        */
-        "DebugMode" => $DebugMode,
+    */
+    "DebugMode" => $DebugMode,
 
-        /*
+    /*
         The type of errors you want to receive. Set to 0 for production.
         Debug Level
         0) Off
         1) [Low] Major errors only
         2) [Medium] Major errors and warnings
         3) [High] Major errors, warnings and notices (E-ALL)
-        */
-        "DebugLevel" => $DebugLevel,
-
-        // Usually only used for Alpha Mode
-        "AppHeader" => $AppHeader
-    ), // $dev array
-
-    /************
-    App
-    ************/
-    "App" => array(
-    /* App or site name */
-        "AppName" => $AppName,
-
-        /* Default page title */
-        "PageTitle" => $PageTitle,
-
-        /* Favicon */
-        "Favicon" => $Favicon,
-
-        /* App root directory */
-        "AppRootDir" => $AppRootDir,
-
-        /* Server environment */
-        "AppEnv" => "linux",
-
-        /* Base directory where Src file is located */
-        "BaseDir" => $BaseDir = $_SERVER["DOCUMENT_ROOT"] . "/$AppRootDir",
-
-        /* Base URL for site */
-        "BaseUrl" => $BaseUrl = $AppUrl . (!empty($LocalPort) && $LocalPort != "80" ? ":" . $LocalPort : "") . "/" . $AppRootDir,
-
-        // Sub-Directory for URL/URI purposes
-        "BaseUriExt" => "$AppRootDir/",
-
-        // Cache pages and scripts
-        "AppCache" => $AppCache,
-
-    /************
-    Base URL Paths
-    ************/
-     "Urls" => array(
-
-        "Base" => $BaseUrl . "/", // Redundant for simple shortspings functionality later
-
-        "Src" => $Src = $BaseUrl . "/src/",
-
-        "Views" => $Views = $Src . "views/",
-
-        "Controllers" => $Src . "controllers/",
-
-        "Models" => $Src . "models/",
-
-        "App" => $App = $Src . "app/",
-
-        "User" => $User = $Src . "user/",
-
-        "Css" => $App . "css/",
-
-        "Js" => $App . "js/",
-
-        "Php" => $php = $App . "php/",
-
-        "Img" => $App . "img/",
-
-        "Forms" => $App . "forms/",
-
-        "UserCss" => $User . "css/",
-
-        "UserJs" => $User . "js/",
-
-        "UserPhp" => $User . "php/",
-
-        "UserImg" => $User . "img/",
-
-        "UserForms" => $User . "forms/",
-
-        "Plugins" => $PluginsUrl = $App . "plugins/",
-
-        "Depends" => $DependsUrl = $App . "dependencies/",
-
-        "Logs" => $App . "logs/",
-
-        "Structure" => $Structure = $Src . "structure/",
-
-        "Dom" => $Structure . "dom/",
-
-        "Nav" => $Structure . "nav/",
-
-        "Layouts" => $Structure . "layouts/"
-    ), // "Url array
-
-
-    /************
-    Directories
-    ************/
-    "Dirs" => array(
-
-        "Base" => $BaseDir . "/",
-            
-        "Src" => $Src = $BaseDir . "/src/",
-
-        "Routes" => $Src . "routes/",
-
-        "Views" => $Views = $Src . "views/",
-
-        "Controllers" => $Src . "controllers/",
-
-        "Models" => $Src . "models/",
-
-        "App" => $App = $Src . "app/",
-
-        "User" => $User = $Src . "user/",
-
-        "Css" => $App . "css/",
-
-        "Js" => $App . "js/",
-
-        "Php" => $Php = $App . "php/",
-
-        "Img" => $App . "img/",
-
-        "Forms" => $App . "forms/",
-
-        "UserCss" => $User . "css/",
-
-        "UserJs" => $User . "js/",
-
-        "UserPhp" => $User . "php/",
-
-        "UserImg" => $User . "img/",
-
-        "UserForms" => $User . "forms/",
-
-        "Plugins" => $PluginsDir = $App . "plugins/",
-
-        "Depends" => $DependsDir = $App . "dependencies/",
-
-        "Logs" => $App . "logs/",
-
-        "Structure" => $Structure = $Src . "structure/",
-
-        "Dom" => $Structure . "dom/",
-
-        "Nav" => $Structure . "nav/",
-
-        "Layouts" => $Structure . "layouts/"
-    ), // $dirs array
-
-    /************
-    Plugins Paths - Stand-alone plugins that containt depndencies which the framework is built with.
-    ************/
-    "Depends" => array(
-        "Urls" => array(
-            // SQL
-            "Aces" => $DependsUrl . "aces-sql/",
-
-            // Errors
-            "Decks" => $DependsUrl . "decks/",
-
-            // Logging
-            "Flops" => $DependsUrl . "flops/",
-
-            // Form Building
-            "Folds" => $DependsUrl . "folds-forms/",
-
-            // Ajax Quick Library
-            "Spades" => $DependsUrl . "spades-ajax/"
-        ), // Urls array
-        "Dirs" => array(
-            // SQL
-            "Aces" => $DependsDir . "aces-sql/",
-
-            // Errors
-            "Decks" => $DependsDir . "decks/",
-
-            // Logging
-            "Flops" => $DependsDir . "flops/",
-
-            // Form Building
-            "Folds" => $DependsDir . "folds-forms/",
-
-            // Ajax Quick Library
-            "Spades" => $DependsDir . "spades-ajax/"
-        ) // Dirs array
-    ) // Plugins array
-    ), // $App array
-
-    /************
-    db
-    ************/
-    "Db" => array(
-        /* Connection Type */
-        "Connection" => "mysql",
-
-        /* Host name */
-        "Host" => $MySQLHost,
-
-        /* Default charset */
-        "Charset" => "utf8mb4",
-
-        /* Default port */
-        "Port" => $MySQLPort,
-
-        /* DataBase name */
-        "Database" => $MySQLDbName,
-
-        /* SQL user */
-        "Username" => $MySQLUsername,
-
-        /* SQL password */
-        "Password" => $MySQLPassword
-    ) // $db array
-); // $fdn array
-
-
+    */
+    "DebugLevel" => $DebugLevel,
+
+    // Usually only used for Alpha Mode
+    "AppHeader" => $AppHeader
+]; // $DevArray
+
+/************
+App
+************/
+$AppArray = [
+/* App or site name */
+    "AppName" => $AppName,
+
+    /* Default page title */
+    "PageTitle" => $PageTitle,
+
+    /* Favicon */
+    "Favicon" => $Favicon,
+
+    /* App root directory */
+    "AppRootDir" => $AppRootDir,
+
+    /* Server environment */
+    "AppEnv" => "linux",
+
+    /* Base directory where Src file is located */
+    "BaseDir" => $BaseDir = $_SERVER["DOCUMENT_ROOT"] . "/$AppRootDir/",
+
+    /* Base URL for site */
+    "BaseUrl" => $BaseUrl = $AppUrl . (!empty($LocalPort) && $LocalPort != "80" ? ":" . $LocalPort : "") . "/" . $AppRootDir ."/",
+
+    // Sub-Directory for URL/URI purposes
+    "BaseUriExt" => "$AppRootDir/",
+
+    // Cache pages and scripts
+    "AppCache" => $AppCache
+]; // $AppArray
+
+/************
+Base Paths
+************/
+$SrcUrl = $BaseUrl . "src/";
+$SrcDir = $BaseDir . "src/";
+
+$UserUrl = $SrcUrl . "user/";
+$UserDir = $SrcDir . "user/";
+
+$AppUrl = $SrcUrl . "app/";
+$AppDir = $SrcDir . "app/";
+
+$BuildUrl = $UserUrl . "build/";
+$BuildDir = $UserDir . "build/";
+
+$DependsUrl = $AppUrl . "dependencies/";
+$DependsDir = $AppDir . "dependencies/";
+
+// Dynamically build the array
+$PathsArray = [
+    "Base" => [
+        "Url" => $BaseUrl,
+        "Dir" => $BaseDir
+    ],
+
+    "Src" => [
+        "Url" => $SrcUrl,
+        "Dir" => $SrcDir
+    ],
+
+    "User" => [
+        "Url" => $UserUrl,
+        "Dir" => $UserDir
+    ],
+
+    "App" => [
+        "Url" => $AppUrl,
+        "Dir" => $AppDir
+    ],
+
+    "Routes" => [
+        "Url" => $SrcUrl . "routes/",
+        "Dir" => $SrcDir . "routes/"
+    ],
+
+    "Views" => [
+        "Url" => $UserUrl . "views/",
+        "Dir" => $UserDir . "views/"
+    ],
+
+    "Controllers" => [
+        "Url" => $UserUrl . "controllers/",
+        "Dir" => $UserDir . "controllers/"
+    ],
+
+    "Models" => [
+        "Url" => $UserUrl . "models/",
+        "Dir" => $UserDir . "models/"
+    ],
+
+    "Css" => [
+        "Url" => $UserUrl . "styles/",
+        "Dir" => $UserDir . "styles/"
+    ],
+
+    "Js" => [
+        "Url" => $UserUrl . "js/",
+        "Dir" => $UserDir . "js/",
+        "Core" => [
+            "Url" => $AppUrl . "js/",
+            "Dir" => $AppDir . "js/"
+        ]
+    ],
+
+    "Php" => [
+        "Url" => $UserUrl . "php/",
+        "Dir" => $UserDir . "php/",
+        "Core" => [
+            "Url" => $AppUrl . "php/",
+            "Dir" => $AppDir . "php/"
+        ]
+    ],
+
+    "Forms" => [
+        "Url" => $UserUrl . "forms/",
+        "Dir" => $UserDir . "forms/"
+    ],
+
+    "Img" => [
+        "Url" => $UserUrl . "img/",
+        "Dir" => $UserDir . "img/"
+    ],
+
+    "Plugins" => [
+        "Url" => $AppUrl . "plugins/",
+        "Dir" => $AppDir . "plugins/"
+    ],
+
+    "Depends" => [
+        "Url" => $AppUrl . "dependencies/",
+        "Dir" => $AppDir . "dependencies/"
+    ],
+
+    "Logs" => [
+        "Url" => $AppUrl . "logs/",
+        "Dir" => $AppDir . "logs/"
+    ],
+
+    "Build" => [
+        "Url" => $BuildUrl,
+        "Dir" => $BuildDir
+    ],
+
+    "Dom" => [
+        "Url" => $BuildUrl . "dom/",
+        "Dir" => $BuildDir . "dom/"
+    ],
+
+    "Nav" => [
+        "Url" => $BuildUrl . "nav/",
+        "Dir" => $BuildDir . "nav/"
+    ],
+
+    "Layouts" => [
+        "Url" => $BuildUrl . "layouts/",
+        "Dir" => $BuildDir . "layouts/"
+    ]
+]; // $PathsArray
+
+/************
+Plugins Paths - Stand-alone plugins that containt depndencies which the framework is built with.
+************/
+$DependsArray = [
+// SQL Query Builder
+    "Aces" => [
+        "Url" => $DependsUrl . "aces-sql/",
+        "Dir" => $DependsDir . "aces-sql/"
+    ],
+
+    // Errors
+    "Decks" => [
+        "Url" => $DependsUrl . "decks/",
+        "Dir" => $DependsDir . "decks/"
+    ],
+
+    // Logging
+    "Flops" => [
+        "Url" => $DependsUrl . "flops/",
+        "Dir" => $DependsDir . "flops/"
+    ],
+
+    // Form Building
+    "Folds" => [
+        "Url" => $DependsUrl . "folds-forms/",
+        "Dir" => $DependsDir . "folds-forms/"
+    ],
+
+    // Ajax Quick Library
+    "Spades" => [
+        "Url" => $DependsUrl . "spades-ajax/",
+        "Dir" => $DependsDir . "spades-ajax/"
+    ]
+]; // Depends array
+
+
+/************
+Database Array
+************/
+$DbArray = [
+    /* Connection Type */
+    "Connection" => "mysql",
+
+    /* Host name */
+    "Host" => $MySQLHost,
+
+    /* Default charset */
+    "Charset" => "utf8mb4",
+
+    /* Default port */
+    "Port" => $MySQLPort,
+
+    /* DataBase name */
+    "Database" => $MySQLDbName,
+
+    /* SQL user */
+    "Username" => $MySQLUsername,
+
+    /* SQL password */
+    "Password" => $MySQLPassword
+]; // $db array
+
+return array(
+    "Dev" => $DevArray,
+    "App" => $AppArray,
+    "Paths" => $PathsArray,
+    "Depends" => $DependsArray,
+    "Db" => $DbArray
+);
 
 
 function GetAppState($AppState){

@@ -21,25 +21,25 @@ if(!isset($_SESSION["Root"]["Id"]) || AppState == "Alpha"){
 }
 
 // Added to separate file so resources can be loaded on independent scripts (login, register, etc)
-require_once "/src/app/php/autoload.php";
+require_once "src/app/php/autoload.php";
 
 // Final step is to call route file to direct traffic
 $RouteClass = new Document\RouteClass();
 
 // Get the URI and Route File
 $Uri = $RouteClass -> GetUri();
-// $Dir = sm::Dir("Routes");
+$Dir = sm::Dir("Routes");
 
 // Set the route file based on the URI
-if(str_contains($Uri, "MagicForm/")){
+if(str_contains($Uri, "MagicFormRoute/")){
     // Submitting a form
-    $File = "form_routes.php";
-}elseif(str_contains($Uri, "MagicScript/")){
+    $File = "form_routing.php";
+}elseif(str_contains($Uri, "MagicScriptRoute/")){
     // Running a script
-    $File = "script_routes.php";
+    $File = "script_routing.php";
 }else{
     // Default route
-    $File = "routes.php";
+    $File = "page_routing.php";
 }
 
 // Load the route file
